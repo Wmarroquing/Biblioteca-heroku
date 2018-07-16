@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-import django-heroku
+import django_heroku
 
 django_heroku.setting(locals())
 
