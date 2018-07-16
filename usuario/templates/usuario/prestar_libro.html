@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/offcanvas.css' %}">
+    <title>Prestar libro</title>
+</head>
+<body class="bg-light" onload="VerificarLogin(); ObtenerLibro();">
+    {% csrf_token %}
+    <main role="main" class="container">
+        <div class="my-5 p-3 bg-white rounded box-shadow">
+            <h3>Prestar libro</h3>
+            <hr>
+            <form>
+                <div class="table-responsive-sm">
+                    <table id="tbl_libros"class="table table-bordered table-hover table-sm text-center">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Clasificacion</th>
+                                <th scope="col">Libro</th>
+        
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Libro</td>
+                                <td><input type="text" id="txt_titulo" class="form-control" readonly></td>
+                            </tr>
+                            <tr>
+                                <td>Autor</td>
+                                <td>
+                                    <select id="slc_autor" class="form-control" disabled>
+                                    {% for autor in autores %}
+                                        <option value="{{ autor.id }}">{{ autor }}</option>
+                                    {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Tema</td>
+                                <td>
+                                    <select id="slc_tema" class="form-control" disabled>
+                                    {% for tema in temas %}
+                                        <option value="{{ tema.id }}">{{ tema }}</option>
+                                    {% endfor %}
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Ubicacion</td>
+                                <td><input type="text" id="txt_ubicacion" class="form-control" readonly></td>
+                            </tr>
+                            <tr>
+                                <td>Disponibles</td>
+                                <td><input type="text" id="txt_existencia" class="form-control" readonly></td>
+                            </tr>
+                            <tr>
+                                <td>Fecha Prestamo</td>
+                                <td><input type="text" id="txt_fecha_prestamo" class="form-control" readonly></td>
+                            </tr>
+                            <tr>
+                                <td>Fecha devolucion</td>
+                                <td><input type="text" id="txt_fecha_devolucion" class="form-control" readonly></td>
+                            </tr>
+                        </tbody>
+                    </table> 
+                    <div>
+                        <a href="{% url 'user_libros' %}"><button type="button" class="btn btn-lg btn-outline-secondary">Regresar</button></a>
+                        <button type="submit" class="btn btn-lg btn-outline-success float-right">Prestar</button>
+                    </div>  
+                </div>
+            </form>
+        </div>
+    </main>
+
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <script src="{% static 'javascript/offcanvas.js' %}"></script>
+    <script src="{% static 'javascript/validaciones.js' %}"></script>
+    <script src="{% static 'javascript/prestar_libro.js' %}"></script>
+</body>
+</html>

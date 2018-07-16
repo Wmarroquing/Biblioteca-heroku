@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/b-1.5.2/sc-1.5.0/datatables.min.css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/offcanvas.css' %}">
+    <title>Autores</title>
+</head>
+<body class="bg-light" onload="CallFunction()">
+
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Livre_ouvert.svg/1280px-Livre_ouvert.svg.png" width="40" height="30" alt="">
+            Biblioteca
+        </a>    
+        <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'user_libros' %}">Libros</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'user_autores' %}">Autores</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'user_temas' %}">Temas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'user_prestamos' %}">Prestamos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'user_perfil' %}">Perfil</a>
+                </li>
+            </ul>
+            <div class="float-right">
+                <button type="button" class="btn btn-outline-light" onclick="CerrarSesion()">Cerrar Sesion</button>
+            </div>
+        </div>
+    </nav>
+    {% csrf_token %}
+
+    <main role="main" class="container">
+        <div class="my-5 p-3 bg-white rounded box-shadow">
+            <h3>Autores</h3>
+            <label class="panel-body">Listado general de autores</label>
+            <hr>
+            <div class="table-responsive-lg">
+                <table id="tbl_libros"class="table table-bordered table-hover table-sm text-center">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nombres</th>
+                            <th scope="col">Apellidos</th>
+                            <th scope="col">Nacionalidad</th>
+                            <th scope="col">Libros</th>
+                            <th scope="col">Operaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for autor in autores %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ autor.nombres }}</td>
+                            <td>{{ autor.apellidos }}</td>
+                            <td>{{ autor.nacionalidad }}</td>
+                            <td></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#exampleModalCenter" onclick="ObtenerAutor('{{ autor.id }}')"><i class="fas fa-eye"></i></button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Autores</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label>Nombres</label>
+                            <input type="text" id="txt_nombres" class="form-control" onkeypress="return ValidarTecla(event, 0)" readonly required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Apellidos</label>
+                            <input type="text" id="txt_apellidos" class="form-control" onkeypress="return ValidarTecla(event, 0)" readonly required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nacionalidad</label>
+                        <select id="slc_nacionalidad" class="form-control" disabled>
+                        {% for pais in paises %}
+                            <option value="{{ pais.id }}">{{ pais }}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div>
+                                <label>Genero:</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input class="custom-control-input" type="radio" name="rad_genero" id="rad_masculino" value="1" readonly>
+                                <label class="custom-control-label" for="rad_masculino">Maculino</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input class="custom-control-input" type="radio" name="rad_genero" id="rad_femenino" value="0" readonly>
+                                <label class="custom-control-label" for="rad_femenino">Femenino</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Fecha de ingreso</label>
+                            <input type="text" id="txt_fecha_autor" class="form-control" value="{{ fecha }}" readonly readonly>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Fecha de nacimiento</label>
+                            <input type="text" id="txt_fecha_nac" class="form-control"  placeholder="dd/mm/aaaa" maxlength="10" onkeypress="return ValidarTecla(event, 2)" readonly required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Fecha de fallecimiento</label>
+                            <input type="text" id="txt_fecha_fall" class="form-control"  placeholder="dd/mm/aaaa" maxlength="10" onkeypress="return ValidarTecla(event, 2)" readonly>
+                        </div> 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/b-1.5.2/sc-1.5.0/datatables.min.js"></script>
+    <script src="{% static 'javascript/offcanvas.js' %}"></script>
+    <script src="{% static 'javascript/validaciones.js' %}"></script>
+    <script src="{% static 'javascript/autores.js' %}"></script>
+</body>
+</html>
