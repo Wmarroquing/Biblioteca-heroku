@@ -3,7 +3,7 @@ from django.http import JsonResponse, HttpResponse
 from django.views.generic import View
 from django.core import serializers
 from django.utils import timezone
-from administrador.models import Administrador, Departamento, Municipio, Pais, Autor, Tema, Libro
+from administrador.models import Administrador, Departamento, Municipio, Pais, Autor, Tema, Libro, Biblioteca
 from usuario.models import Usuario, Prestamos, Escolaridad
 
 class LoginView(View):
@@ -96,6 +96,12 @@ class AutorView(View):
         response = {}
         return JsonResponse(response)
 
+class BibliotecaView(View):
+    @staticmethod
+    def get(request):
+        bibliotecas = Biblioteca.objects.all()
+        return render(request, 'administrador/bibliotecas.html', {'bibliotecas': bibliotecas})
+
 class NuevoLibroView(View):
     @staticmethod
     def get(request):
@@ -158,6 +164,12 @@ class NuevoTemaView(View):
         return JsonResponse({
             'data': data
         })
+
+class NuevaBiblioteca(View):
+    @staticmethod
+    def get(request):
+        feha_actual = timezone.localdate
+        return render(request, 'administrador/nueva_biblioteca.html', {'fecha': feha_actual})
 
 class LibroModificar(View):
     @staticmethod

@@ -55,6 +55,16 @@ class Autor(models.Model):
     def __str__(self):
         return self.nombres + ' ' + self.apellidos
 
+class Biblioteca(models.Model):
+    nombre = models.CharField(max_length=75)
+    ubicacion = models.CharField(max_length=75)
+    descripcion = models.TextField()
+    latitud = models.CharField(max_length=125, null=True)
+    longitud = models.CharField(max_length=125, null=True)
+
+    def __str__(self):
+        return self.nombre
+
 class Libro(models.Model):
     titulo = models.CharField(max_length=125)
     autor = models.ForeignKey(Autor, on_delete=models.CASCADE)
@@ -62,6 +72,7 @@ class Libro(models.Model):
     ubicacion = models.CharField(max_length=150)
     existencia = models.IntegerField()
     fecha_ingreso = models.DateField(default=timezone.now)
+    biblioteca = models.ForeignKey(Biblioteca, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.titulo

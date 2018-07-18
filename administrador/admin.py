@@ -8,4 +8,5 @@ admin.site.register(models.Municipio)
 admin.site.register(models.Tema)
 admin.site.register(models.Autor)
 admin.site.register(models.Libro)
+admin.site.register(models.Biblioteca)
 
