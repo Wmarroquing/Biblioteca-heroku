@@ -71,12 +71,11 @@
                             <th scope="row">{{ forloop.counter }}</th>
                             <td>{{ prestamo.token }}</td>
                             <td>{{ prestamo.libro }}</td>
-                            <td>{{ prestamo.tema }}</td>
-                            <td>{{ prestamo.ubicacion }}</td>
+                            <td>{{ prestamo.libro.autor.nombres }}</td>
+                            <td>{{ prestamo.libro.tema.tema }}</td>
                             <td>{{ prestamo.fecha_prestamo }}</td>
                             <td>{{ prestamo.fecha_devolucion }}</td>
                             <td>{{ prestamo.estado }}</td>
-                            <td></td>
                         </tr>
                     {% endfor %}
                     </tbody>

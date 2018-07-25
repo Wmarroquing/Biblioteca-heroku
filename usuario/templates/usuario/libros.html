@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{% static 'css/offcanvas.css' %}">
     <title>Libros</title>
 </head>
-<body class="bg-light" onload="CallFunction()">
+<body class="bg-light" onload="VerificarLogin(); LibrosMostrar()">
 
     <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
         <a class="navbar-brand" href="#">
@@ -52,34 +52,7 @@
             <label class="panel-body">Listado general de libros</label> 
             <hr>
             <div class="table-responsive-md">
-                <table id="tbl_libros" class="table table-bordered table-hover table-sm text-center">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Libro</th>
-                            <th scope="col">Autor</th>
-                            <th scope="col">Tema</th>
-                            <th scope="col">Ubicación</th>
-                            <th scope="col">Disp.</th>
-                            <th scope="col">Operaciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for libro in libros %}
-                        <tr>
-                            <th scope="row">{{ forloop.counter }}</th>
-                            <td>{{ libro.titulo }}</td>
-                            <td>{{ libro.autor }}</td>
-                            <td>{{ libro.tema }}</td>
-                            <td>{{ libro.ubicacion }}</td>
-                            <td>{{ libro.existencia }}</td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-primary" onclick="ObtenerLibro('{{ libro.id }}')">Prestar</button>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                
             </div>
         </div>
     </main>
@@ -87,9 +60,9 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/b-1.5.2/sc-1.5.0/datatables.min.js"></script>
     <script src="{% static 'javascript/offcanvas.js' %}"></script>
-    <script src="{% static 'javascript/validaciones.js' %}"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/b-1.5.2/sc-1.5.0/datatables.min.js"></script>
     <script src="{% static 'javascript/libros.js' %}"></script>
+    <script src="{% static 'javascript/validaciones.js' %}"></script>
 </body>
 </html>

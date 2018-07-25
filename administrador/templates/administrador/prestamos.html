@@ -27,7 +27,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'libros' %}">Libros</a>
                 </li>
-                <li class="nav-item">
+                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'autores' %}">Autores</a>
                 </li>
                 <li class="nav-item">
@@ -38,6 +38,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'usuarios' %}">Usuarios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'bibliotecas' %}">Bibliotecas</a>
                 </li>
             </ul>
             <div class="float-right">
@@ -72,14 +75,20 @@
                             <th scope="row">{{ forloop.counter }}</th>
                             <td>{{ prestamo.token }}</td>
                             <td>{{ prestamo.libro }}</td>
-                            <td>{{ prestamo.tema }}</td>
-                            <td>{{ prestamo.ubicacion }}</td>
+                            <td>{{ prestamo.libro.autor.nombres }}</td>
+                            <td>{{ prestamo.libro.tema.tema }}</td>
                             <td>{{ prestamo.fecha_prestamo }}</td>
-                            <td>{{ prestamo.usuario }}</td>
-                            <td>{{ prestamo.estado }}</td>
+                            <td>{{ prestamo.fecha_devolucion }}</td>
+                            {% if prestamo.estado == "1" %}
+                            <td class="text-warning">Prestado</td>       
                             <td><button class="btn btn-outline-primary" onclick="DevolverLibro('{{ prestamo.id }}')">Devolver</button></td>
+                            {% endif %}
+                            {% if prestamo.estado == "3" %}
+                            <td class="text-success">Devuelto</td>
+                            <td></td>
+                            {% endif %}
                         </tr>
-                    {% endfor %}
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>

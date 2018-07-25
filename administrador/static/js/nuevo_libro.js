@@ -7,6 +7,7 @@ $('form').on('submit', function(evt){
     var tema = $('#slc_tema').val()
     var ubicacion = $('#txt_ubicacion').val()
     var existencia = $('#txt_existencia').val()
+    var biblioteca = $('#slc_biblioteca').val()
 
     if(titulo == ""){
         alert('Ingresa el titulo del libro');
@@ -44,6 +45,7 @@ $('form').on('submit', function(evt){
             tema: tema,
             ubicacion: ubicacion,
             existencia: existencia,
+            biblioteca: biblioteca,
             csrfmiddlewaretoken: $('input:hidden[name=csrfmiddlewaretoken]').val(),
         },
         success: function(response){

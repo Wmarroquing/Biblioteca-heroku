@@ -3,14 +3,16 @@ from django.http import JsonResponse, HttpResponse
 from django.views.generic import View
 from django.core import serializers
 from django.utils import timezone
-from administrador.models import Pais, Departamento, Municipio, Libro, Autor, Tema
+from administrador.models import Pais, Departamento, Municipio, Libro, Autor, Tema, Biblioteca
 from usuario.models import Usuario, Escolaridad, Prestamos
 from administrador.views import GetMuni, GetLibro, GetAutor, GetTema
+import json
 
 class LoginUserView(View):
     @staticmethod
     def get(request):
-        return render(request, 'usuario/index.html')
+        biblioteca = Biblioteca.objects.all()
+        return render(request, 'usuario/index.html', {'bibliotecas': biblioteca})
 
     @staticmethod
     def post(request):
@@ -19,6 +21,9 @@ class LoginUserView(View):
         Usuario.objects.get(
             correo=data.get('email'),
             password=data.get('password'),
+        )
+        Biblioteca.objects.get(
+            id=data.get('biblioteca'),
         )
         return JsonResponse({
             'data': data
@@ -58,8 +63,20 @@ class RegistroUserView(View):
 class LibroView(View):
     @staticmethod
     def get(request):
-        libros = Libro.objects.all()
-        return render(request, 'usuario/libros.html', {'libros': libros})
+        return render(request, 'usuario/libros.html')
+
+    @staticmethod
+    def post(request):
+        data = request.POST
+
+        libro = Libro.objects.filter(
+            biblioteca__id = data.get('id')
+        ).values("id" ,"titulo", "autor__nombres", "tema__tema", "ubicacion", "existencia")      
+        
+        libro = json.dumps(list(libro), cls=serializers.json.DjangoJSONEncoder)
+        return JsonResponse({
+            'libro': libro
+        })
 
 class TemaView(View):
     @staticmethod
@@ -130,8 +147,12 @@ class PrestarLibroView(View):
             fecha_prestamo=data.get('fecha_prestamo'),
             fecha_devolucion=data.get('fecha_devolucion'),
             token=data.get('token'),
-            estado=data.get('estado')
+            estado=data.get('estado'),
         )
+        libro = Libro.objects.get(titulo=data.get('libro'))
+        libro.existencia -= 1
+        libro.save()
+
         return JsonResponse({
             'data': data
         })

@@ -1,7 +1,8 @@
 // FUNCION PARA OBTENER LOS DATOS DE UN LIBRO //
 function ObtenerUsuario(){
 
-    var id = localStorage.getItem('user_log')
+    var user_id = $.parseJSON(localStorage.getItem('user_log'))
+    var id = user_id[0].usuario
 
     $.ajax({
         url: `/obtener_usuario/?id=${id}/`,
@@ -19,7 +20,7 @@ function ObtenerUsuario(){
                     $('#txt_apellidos').val(element.fields.apellidos);
                     $('#txt_direccion').val(element.fields.direccion);
                     $('#txt_telefono').val(element.fields.telefono);
-                    $('#txt_email').val(localStorage.getItem('user_log'));
+                    $('#txt_email').val(id);
                     $('#txt_password').val(element.fields.password);
                     $('#txt_confirm_password').val(element.fields.password);
                     if(element.fields.genero == 'Masculino'){

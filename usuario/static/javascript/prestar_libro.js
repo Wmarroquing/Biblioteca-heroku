@@ -39,7 +39,8 @@ $('form').on('submit', function(evt){
     evt.preventDefault()
     
     var libro = $('#txt_titulo').val()
-    var usuario = localStorage.getItem('user_log')
+    var obtener_usuario = JSON.parse(localStorage.getItem('user_log'))
+    var usuario = obtener_usuario[0].usuario
     var fecha_prestamo = $('#txt_fecha_prestamo').val()
     var fecha_devolucion = $('#txt_fecha_devolucion').val()
     var token = Math.random().toString(36).substr(2);

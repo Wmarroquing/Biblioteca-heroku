@@ -34,6 +34,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'nuevo_tema' %}">Agregar temas</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'nueva_biblioteca' %}">Agregar bibliotecas</a>
+                </li>
             </ul>
             <div class="float-right">
                 <button type="button" class="btn btn-outline-light" onclick="CerrarSesion()">Cerrar Sesion</button>
@@ -74,10 +77,18 @@
                     <label>Existencia</label>
                     <input type="number" id="txt_existencia" class="form-control" min="1" onkeypress="return ValidarTecla(event,1)" required>
                 </div> 
-            </div>
-            <div class="form-group">
-                <label>Fecha de ingreso</label>
-                <input type="text" class="form-control" value="{{ fecha }}" readonly>
+                <div class="col-md-6 mb-3">
+                    <label>Fecha de ingreso</label>
+                    <input type="text" class="form-control" value="{{ fecha }}" readonly>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label>Biblioteca</label>
+                    <select id="slc_biblioteca" class="form-control" required>
+                        {% for biblioteca in bibliotecas %}
+                        <option value="{{biblioteca.id}}">{{biblioteca}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
             <div>
                 <a href="{% url 'libros' %}"><button type="button" class="btn btn-lg btn-outline-secondary">Regresar</button></a>

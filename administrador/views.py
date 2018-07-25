@@ -3,7 +3,7 @@ from django.http import JsonResponse, HttpResponse
 from django.views.generic import View
 from django.core import serializers
 from django.utils import timezone
-from administrador.models import Administrador, Departamento, Municipio, Pais, Autor, Tema, Libro
+from administrador.models import Administrador, Departamento, Municipio, Pais, Autor, Tema, Libro, Biblioteca
 from usuario.models import Usuario, Prestamos, Escolaridad
 
 class LoginView(View):
@@ -96,13 +96,28 @@ class AutorView(View):
         response = {}
         return JsonResponse(response)
 
+class BibliotecaView(View):
+    @staticmethod
+    def get(request):
+        bibliotecas = Biblioteca.objects.all()
+        return render(request, 'administrador/bibliotecas.html', {'bibliotecas': bibliotecas})
+
+    @staticmethod
+    def post(request):
+        data = request.POST.get('id')
+        identificador = Biblioteca.objects.get(id=data)
+        identificador.delete()
+        response = {}
+        return JsonResponse(response) 
+
 class NuevoLibroView(View):
     @staticmethod
     def get(request):
         feha_actual = timezone.localdate
         temas = Tema.objects.all()
         autores = Autor.objects.all()
-        return render(request, 'administrador/nuevo_libro.html', {'fecha': feha_actual, 'temas': temas, 'autores': autores})
+        bibliotecas = Biblioteca.objects.all()
+        return render(request, 'administrador/nuevo_libro.html', {'fecha': feha_actual, 'temas': temas, 'autores': autores, 'bibliotecas': bibliotecas})
 
     @staticmethod
     def post(request):
@@ -114,6 +129,7 @@ class NuevoLibroView(View):
             tema=Tema.objects.get(id=data.get('tema')),
             ubicacion=data.get('ubicacion'),
             existencia=data.get('existencia'),
+            biblioteca=Biblioteca.objects.get(id=data.get('biblioteca')),
         )
         return JsonResponse({
             'data': data
@@ -155,6 +171,26 @@ class NuevoTemaView(View):
         Tema.objects.create(
             tema=data.get('tema'),
         )
+        return JsonResponse({
+            'data': data
+        })
+
+class NuevaBiblioteca(View):
+    @staticmethod
+    def get(request):
+        feha_actual = timezone.localdate
+        return render(request, 'administrador/nueva_biblioteca.html', {'fecha': feha_actual})
+
+    @staticmethod
+    def post(request):
+        data = request.POST
+
+        Biblioteca.objects.create(
+            nombre=data.get('nombre'),
+            descripcion=data.get('descripcion'),
+            ubicacion=data.get('direccion'),
+        )
+
         return JsonResponse({
             'data': data
         })
@@ -222,6 +258,12 @@ class TemaModificar(View):
 
         return JsonResponse({})
 
+class BibliotecaModificar(View):
+    @staticmethod
+    def get(request):
+        feha_actual = timezone.localdate
+        return render(request, 'administrador/modificar_biblioteca.html', {'fecha': feha_actual})
+
 class GetLibro(View):
     @staticmethod
     def get(request):
@@ -262,6 +304,16 @@ class GetMuni(View):
 
         return JsonResponse(data, safe=False)
 
+class GetBiblio(View):
+    @staticmethod
+    def get(request):
+        biblio_id = request.GET.get('id')
+
+        biblioteca = Biblioteca.objects.filter(id=biblio_id)
+        data = serializers.serialize('json', biblioteca, fields=['nombre', 'descripcion', 'ubicacion', 'latitud', 'longitud'])
+
+        return JsonResponse(data, safe=False)
+
 class UsersView(View):
     @staticmethod
     def get(request):
@@ -280,7 +332,12 @@ class PrestamosView(View):
     def post(request):
         data = request.POST.get('id')
         identificador = Prestamos.objects.get(id=data)
-        identificador.delete()
+        identificador.estado = 3
+        libro_id = identificador.libro.id
+        libro = Libro.objects.get(id=libro_id)
+        libro.existencia += 1
+        libro.save()
+        identificador.save() 
         response = {}
         return JsonResponse(response)
 
