@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{% static 'css/offcanvas.css' %}">
     <title>Libros</title>
 </head>
-<body class="bg-light" onload="VerificarLogin(); LibrosMostrar()">
+<body class="bg-gradient-warning" onload="VerificarLogin(); LibrosMostrar()">
 
     <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
         <a class="navbar-brand" href="#">
@@ -38,6 +38,14 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'user_perfil' %}">Perfil</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Biblioteca</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% for biblioteca in bibliotecas %}
+                        <a class="dropdown-item" href="#" onclick="BibliotecaGuardar('{{ biblioteca.id }}'); LibrosMostrar()">{{biblioteca}}</a>
+                        {% endfor %}              
+                    </div>
                 </li>
             </ul>
             <div class="float-right">

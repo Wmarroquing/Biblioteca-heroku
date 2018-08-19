@@ -52,16 +52,19 @@
                 <div class="col-md-6 mb-3">
                     <label>Nombre</label>
                     <input type="text" id="txt_nombre" class="form-control" autofocus required>
+                    <small id="msg_nombre" class="form-text text-danger d-none">* Este campo es obligatorio</small>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label>Dirección</label>
                     <input type="text" id="txt_direccion" class="form-control" required>
+                    <small id="msg_direccion" class="form-text text-danger d-none">* Este campo es obligatorio</small>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label>Descripción</label>
                     <textarea class="form-control" id="txt_descripcion" rows="10" required></textarea>
+                    <small id="msg_descripcion" class="form-text text-danger d-none">* Este campo es obligatorio</small>
                 </div>
-                <div class="col-md-6 mb-3">
+                <div class="col-md-6 mb-3" id="map">
                     <label>Ubicación</label>
                     <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d15443.607821058195!2d-90.52937743022459!3d14.604660699999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses-419!2sgt!4v1531936687652" width="100%" height="250" frameborder="0" style="border:0" allowfullscreen></iframe>
                 </div>
@@ -70,9 +73,21 @@
                 <label>Fecha de ingreso</label>
                 <input type="text" class="form-control" value="{{ fecha }}" readonly>
             </div>
-            <div>
-                <a href="{% url 'bibliotecas' %}"><button type="button" class="btn btn-lg btn-outline-secondary">Regresar</button></a>
-                <button type="submit" class="btn btn-lg btn-outline-success float-right">Aceptar</button>
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <a href="{% url 'bibliotecas' %}" class="btn btn-block btn-outline-secondary" role="button" aria-pressed="true">Regresar</a>
+                </div>
+                <div class="col-md-4 form-group">
+                    <!-- <button type="submit" class="btn btn-block btn-outline-primary">Guardar y añadir otro</button> -->
+                    <input type="submit" class="btn btn-block btn-outline-primary" value="Guardar y añadir otro">
+                </div>
+                <div class="col-md-4 form-group">
+                    <!-- <button type="submit" class="btn btn-block btn-outline-primary">Guardar</button> -->
+                    <input type="submit" class="btn btn-block btn-outline-primary" value="Guardar">
+                </div>
+            </div>
+            <div id="alert_message">
+                <!-- Aui va el mensaje de que devuelve nuestro ajax -->
             </div>
         </form> 
     </main>

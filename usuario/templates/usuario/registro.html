@@ -76,13 +76,17 @@
                 <label for="">Departamento</label>
                 <select name="" class="form-control" id="slc_departamento" required>
                     {% for departamentos in deptos %}
-                        <option value="{{ departamentos.id }}">{{ departamentos }}</option>
+                    <option value="{{ departamentos.id }}">{{ departamentos }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="col-md-6 mb-3">
                 <label for="">Municipio</label>
-                <select name="" class="form-control" id="slc_municipio" required></select>
+                <select name="" class="form-control" id="slc_municipio" required>
+                    {% for muni in municipios %}
+                    <option value="{{ muni.id }}">{{ muni }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div class="col-md-6 mb-3">
                 <label for="">Zona</label>

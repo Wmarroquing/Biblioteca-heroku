@@ -22,9 +22,6 @@ class LoginUserView(View):
             correo=data.get('email'),
             password=data.get('password'),
         )
-        Biblioteca.objects.get(
-            id=data.get('biblioteca'),
-        )
         return JsonResponse({
             'data': data
         })
@@ -33,8 +30,9 @@ class RegistroUserView(View):
     @staticmethod
     def get(request):
         departamentos = Departamento.objects.all()
+        municipios = Municipio.objects.all()
         escolaridades = Escolaridad.objects.all()
-        return render(request, 'usuario/registro.html', {'escolaridades': escolaridades, 'deptos': departamentos})
+        return render(request, 'usuario/registro.html', {'escolaridades': escolaridades, 'deptos': departamentos, 'municipios': municipios})
 
     @staticmethod
     def post(request):
@@ -63,7 +61,8 @@ class RegistroUserView(View):
 class LibroView(View):
     @staticmethod
     def get(request):
-        return render(request, 'usuario/libros.html')
+        bibliotecas = Biblioteca.objects.all()
+        return render(request, 'usuario/libros.html', {'bibliotecas': bibliotecas})
 
     @staticmethod
     def post(request):
@@ -89,9 +88,10 @@ class AutorView(View):
     @staticmethod
     def get(request):
         autores = Autor.objects.all()
+        libros = Libro.objects.all()
         feha_actual = timezone.localdate
         nacionalidad = Pais.objects.all()
-        return render(request, 'usuario/autores.html', {'autores': autores, 'fecha': feha_actual, 'paises': nacionalidad})
+        return render(request, 'usuario/autores.html', {'autores': autores, 'fecha': feha_actual, 'libros': libros ,'paises': nacionalidad})
 
 class PrestamosView(View):
     @staticmethod
@@ -103,8 +103,9 @@ class PerfilView(View):
     @staticmethod
     def get(request):
         departamentos = Departamento.objects.all()
+        municipios = Municipio.objects.all()
         escolaridades = Escolaridad.objects.all()
-        return render(request, 'usuario/perfil.html', {'escolaridades': escolaridades, 'deptos': departamentos})
+        return render(request, 'usuario/perfil.html', {'escolaridades': escolaridades, 'deptos': departamentos, 'municipios': municipios})
 
     @staticmethod
     def post(request):
@@ -162,10 +163,19 @@ class GetUser(View):
     def get(request):
         usuario_id = request.GET.get('id')
 
-        usuario = Usuario.objects.filter(correo=usuario_id)
-        data = serializers.serialize('json', usuario, fields=['nombres', 'apellidos', 'direccion', 'telefono', 'correo', 'password', 'genero', 'fecha_nac', 'cui', 'municipio', 'zona', 'institucion', 'escolaridad', 'foto'])
+        usuario = Usuario.objects.filter(
+            correo=usuario_id
+        ).values('nombres', 'apellidos', 'direccion', 'telefono', 'correo', 'password', 'genero', 'fecha_nac', 'cui', 'municipio', 'municipio__departamento' ,'zona', 'institucion', 'escolaridad', 'foto')      
+        
+        usuario = json.dumps(list(usuario), cls=serializers.json.DjangoJSONEncoder)
+        return JsonResponse({
+            'usuario': usuario
+        })
 
-        return JsonResponse(data, safe=False)
+        # usuario = Usuario.objects.filter(correo=usuario_id)
+        # data = serializers.serialize('json', usuario, fields=['nombres', 'apellidos', 'direccion', 'telefono', 'correo', 'password', 'genero', 'fecha_nac', 'cui', 'municipio', 'municipio__departamento' ,'zona', 'institucion', 'escolaridad', 'foto'])
+
+        # return JsonResponse(data, safe=False)
 
 
 

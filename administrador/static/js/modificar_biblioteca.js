@@ -34,20 +34,23 @@ $('form').on('submit', function(evt){
     var nombre = $('#txt_nombre').val()
     var descripcion = $('#txt_descripcion').val()
     var direccion = $('#txt_direccion').val()
+
+    var id = localStorage.getItem('biblio_id')
     
     $.ajax({
         url: '/administrador/modificar_biblioteca/',
         type: 'post',
         dataType: 'json', 
         data: {
+            id: id,
             nombre: nombre,
             descripcion: descripcion,
             direccion: direccion,
             csrfmiddlewaretoken: $('input:hidden[name=csrfmiddlewaretoken]').val(),
         },
         success: function(response){
-            alert('Biblioteca registrada!')
-            window.location.href = '/bibliotecas/'
+            alert('Biblioteca modificada!')
+            window.location.href = '/administrador/bibliotecas/'
         },
         error: function(err){
             alert('Hubo un problema al registrar tu libro, por favor intentalo mas tarde.')

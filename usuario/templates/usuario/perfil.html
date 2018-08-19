@@ -104,7 +104,7 @@
             </div>
             <div class="col-md-6 mb-3">
                 <label for="">Departamento</label>
-                <select name="" class="form-control" id="slc_departamento" required>
+                <select class="form-control" id="slc_departamento" required>
                     {% for departamentos in deptos %}
                         <option value="{{ departamentos.id }}">{{ departamentos }}</option>
                     {% endfor %}
@@ -112,7 +112,11 @@
             </div>
             <div class="col-md-6 mb-3">
                 <label for="">Municipio</label>
-                <select name="" class="form-control" id="slc_municipio" required></select>
+                <select class="form-control" id="slc_municipio" required>
+                    {% for muni in  municipios %}
+                    <option value="{{ muni.id }}">{{ muni }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div class="col-md-6 mb-3">
                 <label for="">Zona</label>
@@ -124,7 +128,7 @@
             </div>
             <div class="col-md-6 mb-3">
                 <label for="">Escolaridad</label>
-                <select name="" class="form-control" id="slc_escolaridad" required>
+                <select class="form-control" id="slc_escolaridad" required>
                     {% for escolaridad in escolaridades %}
                         <option value="{{ escolaridad.id }}">{{ escolaridad }}</option>
                     {% endfor %}

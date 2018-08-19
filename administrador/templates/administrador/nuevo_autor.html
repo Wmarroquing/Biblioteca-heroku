@@ -49,10 +49,12 @@
                 <div class="col-md-6 mb-3">
                     <label>Nombres</label>
                     <input type="text" id="txt_nombres" class="form-control" onkeypress="return ValidarTecla(event, 0)" autofocus required>
+                    <small id="msg_nombres" class="form-text text-danger d-none">* Este campo es obligatorio</small>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label>Apellidos</label>
                     <input type="text" id="txt_apellidos" class="form-control" onkeypress="return ValidarTecla(event, 0)" required>
+                    <small id="msg_apellidos" class="form-text text-danger d-none">* Este campo es obligatorio</small>
                 </div>
             </div>
             <div class="form-group">
@@ -62,8 +64,9 @@
                         <option value="{{ pais.id }}">{{ pais }}</option>
                     {% endfor %}
                 </select>
+                <small id="msg_nacionalidad" class="form-text text-danger d-none">* Este campo es obligatorio</small>
             </div>
-            <div class="row">
+            <div class="row form-group">
                 <div class="col-md-6 mb-3">
                     <div>
                         <label>Genero:</label>
@@ -76,6 +79,7 @@
                         <input class="custom-control-input" type="radio" name="rad_genero" id="rad_femenino" value="0">
                         <label class="custom-control-label" for="rad_femenino">Femenino</label>
                     </div>
+                    <small id="msg_genero" class="form-text text-danger d-none">* Este campo es obligatorio</small>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label>Fecha de ingreso</label>
@@ -84,17 +88,31 @@
                 <div class="col-md-6 mb-3">
                     <label>Fecha de nacimiento</label>
                     <input type="text" id="txt_fecha_nac" class="form-control"  placeholder="dd/mm/aaaa" maxlength="10" onkeypress="return ValidarTecla(event, 2)" required>
+                    <small id="msg_fecha_nac" class="form-text text-danger d-none">* Este campo es obligatorio</small>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label>Fecha de fallecimiento</label>
                     <input type="text" id="txt_fecha_fall" class="form-control"  placeholder="dd/mm/aaaa" maxlength="10" onkeypress="return ValidarTecla(event, 2)">
+                    <small id="msg_fecha_fall" class="form-text text-danger d-none"></small>
                 </div> 
             </div>
-            <div>
-                <a href="{% url 'autores' %}"><button type="button" class="btn btn-lg btn-outline-secondary">Regresar</button></a>
-                <button type="submit" class="btn btn-lg btn-outline-success float-right">Aceptar</button>
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <a href="{% url 'autores' %}" class="btn btn-block btn-outline-secondary" role="button" aria-pressed="true">Regresar</a>
+                </div>
+                <div class="col-md-4 form-group">
+                    <input type="submit" class="btn btn-block btn-outline-primary" value="Guardar y añadir otro">
+                    <!-- <button type="submit" class="btn btn-block btn-outline-primary">Guardar y añadir otro</button> -->
+                </div>
+                <div class="col-md-4 form-group">
+                    <input type="submit" class="btn btn-block btn-outline-primary" value="Guardar">
+                    <!-- <button type="submit" class="btn btn-block btn-outline-primary">Guardar</button> -->
+                </div>
             </div>
-        </form>  
+            <div id="alert_message">
+                <!-- Aui va el mensaje de que devuelve nuestro ajax -->
+            </div>
+        </form> 
     </main>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

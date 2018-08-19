@@ -51,31 +51,36 @@
             <div class="form-group">
                 <label>Titulo</label>
                 <input type="text" id="txt_titulo" class="form-control" autofocus required>
+                <small id="msg_titulo" class="form-text text-danger d-none">* Este campo es obligatorio</small>
             </div>
-            <div class="row">
+            <div class="row form-group">
                 <div class="col-md-6 mb-3">
                     <label>Autor</label>
                     <select id="slc_autor" class="form-control" required>
                         {% for autor in autores %}
-                            <option value="{{ autor.id }}">{{ autor }}</option>
+                        <option value="{{ autor.id }}">{{ autor }}</option>
                         {% endfor %}
                     </select>
+                    <small id="msg_autor" class="form-text text-danger d-none">* Este campo es obligatorio</small>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label>Tema</label>
                     <select id="slc_tema" class="form-control" required>
                         {% for tema in temas %}
-                            <option value="{{ tema.id }}">{{ tema }}</option>
+                        <option value="{{ tema.id }}">{{ tema }}</option>
                         {% endfor %}
                     </select>
+                    <small id="msg_tema" class="form-text text-danger d-none">* Este campo es obligatorio</small>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label>Ubicacion</label>
                     <input type="text" id="txt_ubicacion" class="form-control" required>
+                    <small id="msg_ubicacion" class="form-text text-danger d-none">* Este campo es obligatorio</small>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label>Existencia</label>
                     <input type="number" id="txt_existencia" class="form-control" min="1" onkeypress="return ValidarTecla(event,1)" required>
+                    <small id="msg_existencia" class="form-text text-danger d-none">* Este campo es obligatorio</small>
                 </div> 
                 <div class="col-md-6 mb-3">
                     <label>Fecha de ingreso</label>
@@ -88,11 +93,24 @@
                         <option value="{{biblioteca.id}}">{{biblioteca}}</option>
                         {% endfor %}
                     </select>
+                    <small id="msg_biblioteca" class="form-text text-danger d-none">* Este campo es obligatorio</small>
                 </div>
             </div>
-            <div>
-                <a href="{% url 'libros' %}"><button type="button" class="btn btn-lg btn-outline-secondary">Regresar</button></a>
-                <button type="submit" class="btn btn-lg btn-outline-success float-right">Aceptar</button>
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <a href="{% url 'libros' %}" class="btn btn-block btn-outline-secondary" role="button" aria-pressed="true">Regresar</a>
+                </div>
+                <div class="col-md-4 form-group">
+                    <!-- <button type="submit" class="btn btn-block btn-outline-primary">Guardar y añadir otro</button> -->
+                    <input type="submit" class="btn btn-block btn-outline-primary" value="Guardar y añadir otro">
+                </div>
+                <div class="col-md-4 form-group">
+                    <!-- <button type="submit" class="btn btn-block btn-outline-primary">Guardar</button> -->
+                    <input type="submit" class="btn btn-block btn-outline-primary" value="Guardar">
+                </div>
+            </div>
+            <div id="alert_message">
+                <!-- Aui va el mensaje de que devuelve nuestro ajax -->
             </div>
         </form> 
     </main>

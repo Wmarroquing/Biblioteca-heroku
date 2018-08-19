@@ -62,7 +62,6 @@
                             <th scope="col">Nombres</th>
                             <th scope="col">Apellidos</th>
                             <th scope="col">Departamento</th>
-                            <th scope="col">Libros</th>
                             <th scope="col">Estado</th>
                             <th scope="col">Operaciones</th>
                         </tr>
@@ -73,11 +72,10 @@
                             <th scope="row">{{ forloop.counter }}</th>
                             <td>{{ usuario.nombres }}</td>
                             <td>{{ usuario.apellidos }}</td>
-                            <td>Guatemala</td>
-                            <td>{{ usuario.libros }}</td>
-                            <td>1</td>
+                            <td>{{ usuario.municipio.departamento }}</td>
+                            <td></td>
                             <td>
-                                <button class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#exampleModalCenter" onclick="ObtenerUsuario('{{ usuario.correo }}')"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target=".bd-example-modal-lg" onclick="ObtenerUsuario('{{ usuario.correo }}')"><i class="fas fa-eye"></i></button>
                             </td>
                         </tr>
                     {% endfor %}
@@ -88,100 +86,115 @@
     </main>
 
     <!-- Modal -->
-    <div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Usuaarios</h5>
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Usuario</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="">Nombres</label>
-                            <input type="text" class="form-control" id="txt_nombres" autofocus onkeypress="return ValidarTecla(event,0)" readonly>
+                        <div class="col-md-4 mb-3">
+                            <img src="" class="img-thumbnail" id="img64">
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="">Apellidos</label>
-                            <input type="text" class="form-control" id="txt_apellidos" onkeypress="return ValidarTecla(event,0)" readonly>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="">Direccion</label>
-                            <input type="text" class="form-control" id="txt_direccion" readonly>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="">Telefono</label>
-                            <input type="text" class="form-control" id="txt_telefono" maxlength="8" onkeypress="return ValidarTecla(event,1)" readonly>
+                        <div class="col-md-8 mb-3">
+                            <div class="form-group row">
+                                <label class="col-lg-2 col-form-label font-weight-bold">Nombres:</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control-plaintext" id="txt_nombres" readonly>
+                                </div>
+                                <label class="col-lg-2 col-form-label font-weight-bold">Direccion:</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control-plaintext" id="txt_direccion" readonly>
+                                </div>
+                                <label class="col-lg-2 col-form-label font-weight-bold">Telefono:</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control-plaintext" id="txt_telefono" readonly>
+                                </div>
+                                <label class="col-lg-2 col-form-label font-weight-bold">Email:</label>
+                                <div class="col-lg-10">
+                                    <input type="email" class="form-control-plaintext" id="txt_email" readonly>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="">Email</label>
-                        <input type="email" class="form-control" id="txt_email" readonly>
-                    </div>
+                    <hr>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="">Contraseña</label>
-                            <input type="password" class="form-control" id="txt_password" readonly>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label font-weight-bold">Fecha de nacimiento</label>
+                                <div class="col-lg-8">
+                                    <input type="text" class="form-control-plaintext " id="txt_fecha_nac" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-3">
+                            <div class="form-group row">
+                                <label class="col-lg-2 col-form-label font-weight-bold">CUI:</label>
+                                <div class="col-lg-10">
+                                    <input type="text" class="form-control-plaintext" id="txt_cui" readonly>
+                                </div>
+                            </div> 
+                        </div>
+                        <div class="col-lg-6 mb-3">
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label font-weight-bold">Departamento:</label>
+                                <div class="col-lg-8">
+                                    <select name="" class="form-control-plaintext" id="slc_departamento" disabled>
+                                        {% for departamentos in deptos %}
+                                        <option value="{{ departamentos.id }}">{{ departamentos }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="">Confirmar contraseña</label>
-                            <input type="password" class="form-control" id="txt_confirm_password" readonly>
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label font-weight-bold">Municipio:</label>
+                                <div class="col-lg-7">
+                                    <select name="" class="form-control-plaintext" id="slc_municipio" disabled>
+                                        {% for muni in municipios %}
+                                        <option value="{{ muni.id }}">{{ muni }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label font-weight-bold">Institucion educativa:</label>
+                                <div class="col-lg-8">
+                                    <input type="text" class="form-control-plaintext" id="txt_institucion" readonly>
+                                </div>
+                            </div>    
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-form-label font-weight-bold">Escolaridad:</label>
+                                <div class="col-lg-7">
+                                    <select name="" class="form-control-plaintext" id="slc_escolaridad" disabled>
+                                        {% for escolaridad in escolaridades %}
+                                        <option value="{{ escolaridad.id }}">{{ escolaridad }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>                            
                         </div>
                     </div>
                     <div class="form-group">
                         <div>
-                            <label>Genero:</label>
+                            <label class="font-weight-bold">Genero:</label>
                         </div>
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input class="custom-control-input" type="radio" name="rad_genero" id="rad_masculino" value="1">
+                            <input class="custom-control-input" type="radio" name="rad_genero" id="rad_masculino" value="1" disabled>
                             <label class="custom-control-label" for="rad_masculino">Maculino</label>
                         </div>
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input class="custom-control-input" type="radio" name="rad_genero" id="rad_femenino" value="0">
+                            <input class="custom-control-input" type="radio" name="rad_genero" id="rad_femenino" value="0" disabled>
                             <label class="custom-control-label" for="rad_femenino">Femenino</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="">Fecha de nacimiento</label>
-                            <input type="text" class="form-control" id="txt_fecha_nac" maxlength="10" onkeypress="return ValidarTecla(event,2)" readonly>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="">CUI</label>
-                            <input type="text" class="form-control" id="txt_cui" maxlength="13" onkeypress="return ValidarTecla(event,1)" readonly>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="">Departamento</label>
-                            <select name="" class="form-control" id="slc_departamento" readonly>
-                                {% for departamentos in deptos %}
-                                <option value="{{ departamentos.id }}">{{ departamentos }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="">Municipio</label>
-                            <select name="" class="form-control" id="slc_municipio" readonly></select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="">Zona</label>
-                            <input type="number" class="form-control" id="txt_zona" min="1" max="25" onkeypress="return ValidarTecla(event,1)" readonly>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="">Institucion educativa</label>
-                            <input type="text" class="form-control" id="txt_institucion" onkeypress="return ValidarTecla(event,0)" readonly>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="">Escolaridad</label>
-                            <select name="" class="form-control" id="slc_escolaridad" readonly>
-                                {% for escolaridad in escolaridades %}
-                                <option value="{{ escolaridad.id }}">{{ escolaridad }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <img src="" class="img-thumbnail" id="img64">
                         </div>
                     </div>
                 </div>

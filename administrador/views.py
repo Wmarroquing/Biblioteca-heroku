@@ -15,6 +15,8 @@ class LoginView(View):
     def post(request):
         data = request.POST
 
+        print('Hola')
+
         Administrador.objects.get(
             correo=data.get('email'),
             password=data.get('password'),
@@ -28,7 +30,8 @@ class RegistroView(View):
     @staticmethod
     def get(request):
         dapartamentos = Departamento.objects.all()
-        return render(request, 'administrador/registro.html', {'deptos': dapartamentos})
+        municipios = Municipio.objects.all()
+        return render(request, 'administrador/registro.html', {'deptos': dapartamentos, 'municipios': municipios})
 
     @staticmethod
     def post(request):
@@ -264,6 +267,19 @@ class BibliotecaModificar(View):
         feha_actual = timezone.localdate
         return render(request, 'administrador/modificar_biblioteca.html', {'fecha': feha_actual})
 
+    @staticmethod
+    def post(request):
+        data = request.POST
+
+        biblioteca = Biblioteca.objects.get(pk=int(data.get('id')))
+        biblioteca.nombre = data.get('nombre')
+        biblioteca.descripcion = data.get('descripcion')
+        biblioteca.ubicacion = data.get('direccion')
+
+        biblioteca.save()
+
+        return JsonResponse({})
+
 class GetLibro(View):
     @staticmethod
     def get(request):
@@ -319,8 +335,9 @@ class UsersView(View):
     def get(request):
         usuarios = Usuario.objects.all()
         departamentos = Departamento.objects.all()
+        municipios = Municipio.objects.all()
         escolaridades = Escolaridad.objects.all()
-        return render(request, 'administrador/usuarios.html', {'users': usuarios, 'escolaridades': escolaridades, 'deptos': departamentos})
+        return render(request, 'administrador/usuarios.html', {'users': usuarios, 'escolaridades': escolaridades, 'deptos': departamentos, 'municipios': municipios})
 
 class PrestamosView(View):
     @staticmethod
